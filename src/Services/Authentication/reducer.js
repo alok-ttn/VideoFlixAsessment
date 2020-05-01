@@ -4,6 +4,7 @@ const initialState = {
   flag: 0,
 };
 const homeReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     case TOGGLE_LOGIN:
       return {...state, isLoggedin: 1};

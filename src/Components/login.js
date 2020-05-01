@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
   ImageBackground,
 } from 'react-native';
 const Realm = require('realm');
@@ -26,6 +25,7 @@ class Login extends React.Component {
   onChangeText(input) {}
   render() {
     const {username, password, realm} = this.state;
+    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <ImageBackground
@@ -60,17 +60,20 @@ class Login extends React.Component {
 
           <View style={styles.InputTextView}>
             <View style={styles.usernameView}>
-              <View>
-                <Image />
+              <View style={styles.iconsView}>
+                <Image
+                  source={imageConstants.userIcon}
+                  style={styles.iconImageView}
+                />
               </View>
-              <View>
+              <View style={styles.PlaceholderView}>
                 <TextInput
                   style={styles.inputDetails}
-                  placeholder={'Enter User Id'}
-                  placeholderTextColor={
-                    colorConstants.loginPlaceHolderTextColor
-                  }
+                  placeholder={'User Name'}
+                  placeholderTextColor={colorConstants.otherTextColor}
                   autoCapitalize={false}
+                  color={'#fff'}
+                  fontSize={17}
                   onChangeText={text => {
                     this.setState({username: text});
                   }}
@@ -79,17 +82,20 @@ class Login extends React.Component {
             </View>
 
             <View style={styles.usernameView}>
-              <View>
-                <Image />
+              <View style={styles.iconsView}>
+                <Image
+                  source={imageConstants.passwordIcon}
+                  style={styles.iconImageView}
+                />
               </View>
-              <View>
+              <View style={styles.PlaceholderView}>
                 <TextInput
                   style={styles.inputDetails}
                   placeholder={'Password'}
-                  placeholderTextColor={
-                    colorConstants.loginPlaceHolderTextColor
-                  }
+                  placeholderTextColor={colorConstants.otherTextColor}
                   secureTextEntry={true}
+                  color={'#fff'}
+                  fontSize={16}
                   autoCapitalize={false}
                   onChangeText={text => {
                     this.setState({password: text});
@@ -106,6 +112,7 @@ class Login extends React.Component {
                   username,
                   password,
                 );
+                // navigation.navigate('videolist');
               }}>
               <View style={styles.loginButton}>
                 <Text style={styles.loginText}>LOGIN</Text>
@@ -159,11 +166,12 @@ class Login extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     const {navigation} = props;
+    console.log(props);
     if (props.isLoggedIn === 1) {
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{name: 'Concept'}],
-      // });
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'videolist'}],
+      });
       console.warn('user logged in');
     }
 
@@ -183,6 +191,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  iconsView: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  PlaceholderView: {
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    flex: 0.8,
+  },
+  iconImageView: {height: 40, width: 40},
   noteToUser: {
     fontSize: 17,
     color: colorConstants.otherTextColor,
@@ -209,7 +229,6 @@ const styles = StyleSheet.create({
   InputTextView: {
     flex: 0.3,
     marginTop: 27,
-    // backgroundColor: '#fff',
   },
   imageBack: {
     flex: 1,
@@ -233,7 +252,7 @@ const styles = StyleSheet.create({
     color: colorConstants.otherTextColor,
     marginTop: 14,
     marginBottom: 20,
-    fontWeight: '300',
+    fontWeight: '500',
   },
   newUserText: {
     fontSize: 15,
@@ -272,7 +291,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.homeReducer.isLoggedIn,
+  isLoggedIn: state.homeReducer.isLoggedin,
 });
 
 const mapDispatchToProps = {
