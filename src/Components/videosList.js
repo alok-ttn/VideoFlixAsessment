@@ -35,7 +35,7 @@ class VideoList extends React.Component {
                   style={{height: 30, width: 30}}
                 />
               </TouchableOpacity>
-              <Text></Text>
+              <Text style={styles.applogoText}>APP LOGO</Text>
             </View>
             <View style={styles.topBarRight} />
           </View>
@@ -54,9 +54,16 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'center',
   },
+  applogoText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginLeft: 20,
+  },
   topBarLeft: {
     flex: 0.5,
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   topBarRight: {
     flex: 0.5,

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import LoginScreen from './src/Components/login';
@@ -15,7 +16,8 @@ function DrawerNavi() {
   return (
     <Drawer.Navigator
       drawerStyle={{
-        backgroundColor: '#c6cbee',
+        backgroundColor: '#4a4a4a',
+        shadowColor: '#f2f2f2',
       }}>
       <Drawer.Screen name="Home" component={videolist} />
       <Drawer.Screen name="Live tv" component={videolist} />

@@ -2,7 +2,6 @@ import {TOGGLE_LOGIN, TOGGLE_FAILED, TOGGLE_SUCCESS} from './constant';
 import config from '../../config/env';
 export const toggleLogin = (realm, username, password) => dispatch => {
   if (realm[0].username === username && realm[0].password === password) {
-    console.warn('hello');
     dispatch({
       type: TOGGLE_LOGIN,
     });

@@ -25,7 +25,6 @@ class Login extends React.Component {
   onChangeText(input) {}
   render() {
     const {username, password, realm} = this.state;
-    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <ImageBackground
@@ -166,20 +165,18 @@ class Login extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     const {navigation} = props;
-    console.log(props);
     if (props.isLoggedIn === 1) {
       navigation.reset({
         index: 0,
         routes: [{name: 'videolist'}],
       });
-      console.warn('user logged in');
     }
 
     if (props.isLoggedIn === 2) {
       Alert.alert('Error', 'Wrong Login Credentials', [
         {
           text: 'Try Again',
-          onPress: () => props.toggleSucess(),
+          onPress: () => props.toggleSuccess(),
         },
       ]);
     }
