@@ -10,24 +10,22 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {toggleFlag, toggleSuccess} from '../Services/Authentication/action';
+const Realm = require('realm');
 import {colorConstants, imageConstants} from '../config/constants';
-
+import {connect} from 'react-redux';
+import {toggleLogin} from '../Services/Authentication/action';
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
-      headerTag: '',
-      isLoggedin: false,
-      flag: false,
+      realm: null,
+      flag: 0,
     };
   }
   onChangeText(input) {}
   render() {
-    const {loading} = this.props;
     return (
       <View style={styles.container}>
         <ImageBackground
@@ -63,10 +61,7 @@ class Login extends React.Component {
           <View style={styles.LowerSection}>
             <TouchableOpacity
               onPress={() => {
-                this.props.toggleHomeFlag(
-                  this.state.username,
-                  this.state.password,
-                );
+                this.checkData();
               }}>
               <View style={styles.loginButton}>
                 <Text style={styles.loginText}>LOGIN</Text>
@@ -83,33 +78,67 @@ class Login extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          {loading === 1 ? (
-            <View style={styles.Activity}>
-              <ActivityIndicator />
-            </View>
-          ) : null}
         </ImageBackground>
       </View>
     );
   }
-  togglesuccessvalue() {
-    this.props.toggleSuccess();
+  checkData() {
+    console.warn('hello');
+    // const storeData = this.state.realm.objects('UserData');
+    // this.setState({storeData: storeData});
   }
 
-  componentDidMount() {}
-  static getDerivedStateFromProps(props, state) {
-    const {navigation} = props;
-    if (props.success === 1) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Concept'}],
-      });
+  saveData() {
+    const {realm} = this.state;
+    realm.write(() => {
+      realm.create('UserData', {username: 'Admin'});
+      realm.create('UserData', {password: 'Admin'});
+    });
+  }
+  deleteData() {
+    const {realm} = this.state;
+    realm.write(() => {
+      let allDogs = realm.objects('Dog');
+      realm.delete(allDogs);
+    });
+  }
+
+  // componentDidMount() {
+  //   Realm.open({
+  //     schema: [
+  //       {
+  //         name: 'UserData',
+  //         properties: {username: 'string'},
+  //       },
+  //     ],
+  //   }).then(realm => {
+  //     this.setState({realm});
+  //   });
+  //   this.saveData();
+  // }
+
+  componentWillUnmount() {
+    const {realm} = this.state;
+    if (realm !== null && !realm.isClosed) {
+      realm.close();
     }
-    if (props.success === 2) {
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const {isLoggedIn} = props;
+    if (isLoggedIn === true) {
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{name: 'Concept'}],
+      // });
+      console.warn('user logged in');
+    }
+
+    if (isLoggedIn === false) {
       Alert.alert('Error', 'Wrong Login Credentials', [
         {
           text: 'Try Again',
-          onPress: () => props.toggleSucess(),
+          // onPress: () => (state.flag = 0),
         },
       ]);
     }
@@ -197,14 +226,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  success: state.homeReducer.isSuccess,
-  loading: state.homeReducer.isLoading,
-  token: state.homeReducer.token,
+  isLoggedIn: state.homeReducer.isLoggedIn,
 });
 
 const mapDispatchToProps = {
-  toggleHomeFlag: toggleFlag,
-  toggleSucess: toggleSuccess,
+  toggleLogin: toggleLogin,
 };
 export default connect(
   mapStateToProps,
