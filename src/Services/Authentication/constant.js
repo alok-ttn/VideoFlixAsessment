@@ -1,1 +1,3 @@
 export const TOGGLE_LOGIN = 'TOGGLE_FLAG';
+export const TOGGLE_FAILED = 'TOGGLE_FAILED';
+export const TOGGLE_SUCCESS = 'TOGGLE_SUCCESS';

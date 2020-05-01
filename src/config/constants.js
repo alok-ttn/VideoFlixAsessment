@@ -1,11 +1,9 @@
 export const colorConstants = {
-  bacgroundColorSplash: '#f2f2e3',
-  loginPlaceHolderTextColor: '#6d6d6d',
-  forgotPasswordTextColor: '#484848',
-  orangecolor: '#eb5a0e',
+  fontColour: '#e4264e',
+  otherTextColor: '#737375',
 };
 
 export const imageConstants = {
-  axfoodLogo: require('../Assets/axfoodLogoHigh.png'),
-  loginScreenBackGround: require('../Assets/imagebackgroundlogin.png'),
+  backgroundImage: require('../Assets/Login/Background/drawable-xhdpi/layer_1.png'),
+  logo: require('../Assets/Login/drawable-mdpi/logo.png'),
 };
