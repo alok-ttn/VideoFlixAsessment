@@ -12,7 +12,11 @@ import {
 const Realm = require('realm');
 import {colorConstants, imageConstants} from '../config/constants';
 import {connect} from 'react-redux';
-import {toggleLogin, toggleSuccess} from '../Services/Authentication/action';
+import {
+  toggleLogin,
+  toggleSuccess,
+  fetchVideosApi,
+} from '../Services/Authentication/action';
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -166,10 +170,13 @@ class Login extends React.Component {
   static getDerivedStateFromProps(props, state) {
     const {navigation} = props;
     if (props.isLoggedIn === 1) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'videolist'}],
-      });
+      props.fetchVideosApi();
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'videolist'}],
+        });
+      }, 500);
     }
 
     if (props.isLoggedIn === 2) {
@@ -294,6 +301,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   toggleLogin: toggleLogin,
   toggleSuccess: toggleSuccess,
+  fetchVideosApi: fetchVideosApi,
 };
 export default connect(
   mapStateToProps,

@@ -7,57 +7,56 @@ import {
   Image,
   ImageBackground,
   Text,
-  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import {colorConstants, imageConstants} from '../config/constants';
 import {connect} from 'react-redux';
 import {fetchVideosApi} from '../Services/Authentication/action';
-import Carousel from 'react-native-snap-carousel';
-import { transform } from '@babel/core';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import imageUrl from '../config/env';
 
 class VideoList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeIndex: 0,
-      carouselItems: [
-        {
-          title: 'Item 1',
-          text: 'Text 1',
-        },
-        {
-          title: 'Item 2',
-          text: 'Text 2',
-        },
-        {
-          title: 'Item 3',
-          text: 'Text 3',
-        },
-        {
-          title: 'Item 4',
-          text: 'Text 4',
-        },
-        {
-          title: 'Item 5',
-          text: 'Text 5',
-        },
-      ],
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    // console.log(this.props.videosData.results);
+  }
 
-  _renderItem({item, index}) {
+  get pagination() {
+    const {activeSlide} = this.state;
     return (
-      <View
-        style={{
-          backgroundColor: 'floralwhite',
+      <Pagination
+        dotsLength={4}
+        activeDotIndex={activeSlide}
+        containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.75)'}}
+        dotStyle={{
+          width: 10,
+          height: 10,
           borderRadius: 5,
-          height: 200,
-          marginLeft: 15,
-        }}>
-        <Text style={{fontSize: 30}}>Hello</Text>
-        <Text>Hiii</Text>
+          marginHorizontal: 0,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+        }}
+        inactiveDotStyle={
+          {
+            // Define styles for inactive dots here
+          }
+        }
+        inactiveDotOpacity={0.5}
+        activeOpacity={1}
+        inactiveDotColor={colorConstants.otherTextColor}
+        inactiveDotScale={1}
+      />
+    );
+  }
+  _renderItem({item, index}) {
+    var imageurl = imageUrl.baseURL + item.backdrop_path;
+    return (
+      <View style={styles.bannerItemsView}>
+        <Image source={{uri: imageurl}} style={styles.bannerImage} />
       </View>
     );
   }
@@ -92,12 +91,15 @@ class VideoList extends React.Component {
             <Carousel
               layout={'default'}
               ref={ref => (this.carousel = ref)}
-              data={this.state.carouselItems}
+              data={this.props.videosData.results}
               sliderWidth={450}
-              itemWidth={500}
+              itemWidth={450}
               renderItem={this._renderItem}
+              inactiveSlideOpacity={0.7}
+              inactiveSlideScale={1}
               onSnapToItem={index => this.setState({activeIndex: index})}
             />
+            {this.pagination}
           </View>
         </ImageBackground>
       </SafeAreaView>
@@ -110,13 +112,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#0d0d0d',
     flex: 1,
   },
+  bannerImage: {height: 200, width: 500, resizeMode: 'center'},
   imageBack: {
     flex: 1,
     resizeMode: 'center',
   },
   bannerView: {
     flex: 0.3,
-    backgroundColor: 'white',
+  },
+  bannerItemsView: {
+    borderRadius: 5,
+    height: 200,
+    marginLeft: 15,
+    marginRight: 10,
   },
   applogoText: {
     fontSize: 25,
@@ -147,6 +155,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   isLoggedIn: state.homeReducer.isLoggedIn,
+  videosData: state.homeReducer.videosData,
 });
 
 const mapDispatchToProps = {

@@ -1,22 +1,8 @@
-const apiURl = 'https://admin-stage.priskoll.occdev.axfood.se';
-const conceptURL = 'https://admin-rel.priskoll.occdev.axfood.se';
-const baseURL = 'axfood';
-const security = 'axfood-security';
-const tempProductScan = 'axfood-product-scan';
-
-const apiConfig = {
-  authenticationApi: {
-    loginUserHandle: `/${baseURL}/${security}/login`,
-  },
-  tempStoreApi: {
-    storeListHandle: `/${baseURL}/${tempProductScan}/stores`,
-    searchListHandle: `/${baseURL}/${tempProductScan}/searchResults/`,
-    conceptListHandle: `/${baseURL}/${tempProductScan}/concepts?`,
-  },
-};
+const apiURl =
+  'https://api.themoviedb.org/3/trending/all/day?api_key=820016b7116f872f5f27bf56f9fdfb66';
+const baseURL = 'https://image.tmdb.org/t/p/w500';
 
 export default {
   apiURl,
-  apiConfig,
-  conceptURL,
+  baseURL,
 };
